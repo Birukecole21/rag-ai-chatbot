@@ -55,8 +55,11 @@ if uploaded_file is not None:
 
         Question: {question}
         """
-
-        response = llm.invoke(prompt)
+    try:
+        with st.spinner("Generating answer..."):
+                response = llm.invoke(prompt)
 
         st.write("Answer:")
         st.write(response.content)
+    except Exception as e:
+        st.error("something went wrong while generating the answer. Please try again.")
