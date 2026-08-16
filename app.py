@@ -7,11 +7,26 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
 load_dotenv()
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+if st.button("🗑️ clear chat"):
+    st.session_state.messages = []
+    st.rerun()
 llm = ChatOpenAI(
     model="gpt-4o-mini"
 )
-st.title("RAG Chatbot")
-st.write("Upload a PDF and ask a question about it.")
+st.set_page_config(
+    page_title="RAG PDF Assistant",
+    page_icon="📄",
+    layout="centered"
+)
+
+st.title("📄 RAG PDF Assistant")
+st.write(
+    "Upload a PDF document and ask questions about its content."
+)
+# st.write("Upload a PDF and ask a question about it.")
 uploaded_file = st.file_uploader("Choose a PDF file", type="pdf")
 if uploaded_file is not None:
     st.success("PDF uploaded successfully!")
@@ -19,7 +34,7 @@ if uploaded_file is not None:
     text = ""
     for page in pdf_reader.pages:
         text += page.extract_text()
-        st.write(text)
+        # st.write(text)
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
         chunk_overlap=200
@@ -40,26 +55,40 @@ if uploaded_file is not None:
     )
     retriever = vector_store.as_retriever()
 
-    question = st.text_input("Ask a question about the PDF:")
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+
+    question = st.text_input(
+        "💬 Ask a question about your document",
+        placeholder="Example: how many vacation days do employees receive?"
+    )
     if question:
         results = retriever.invoke(question)
+        st.session_state.messages.append(
+            {"role": "user", "content": question}
+        )
 
         context = "\n\n".join(
             [doc.page_content for doc in results]
         )
 
         prompt = f"""
-        Answer the question only using the context below.
+Answer the question only using the context below.
 
-        Context: {context}
+Context: {context}
 
-        Question: {question}
-        """
-    try:
-        with st.spinner("Generating answer..."):
+Question: {question}
+"""
+        try:
+            with st.spinner("🤖 Thinking..."):
                 response = llm.invoke(prompt)
+            st.session_state.messages.append(
+                {"role": "assistant", "content": response.content}
+            )
 
-        st.write("Answer:")
-        st.write(response.content)
-    except Exception as e:
-        st.error("something went wrong while generating the answer. Please try again.")
+            with st.chat_message("assistant"):
+                st.write(response.content)
+
+        except Exception as e:
+            st.error("something went wrong while generating the answer. Please try again.")
