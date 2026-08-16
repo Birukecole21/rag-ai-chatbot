@@ -3,7 +3,9 @@
 
 
 A Retrieval-Augmented Generation (RAG) chatbot that allows users to upload a PDF document and ask questions about its content.
+## Demo
 
+![RAG PDF Assistant Demo](rag-chatbot-demo.png)
 
 
 ## Features
