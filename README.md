@@ -88,3 +88,45 @@ PDF → Text → Text Chunks → Embeddings → FAISS Vector Store → Relevant 
 
 
 This project demonstrates how Retrieval-Augmented Generation can combine document retrieval with a large language model to answer questions using information from a specific document.
+
+## Skills Demonstrated
+
+-Retrieval-Augmented Generation (RAG)
+-PDF text extarction and preprocessing
+-Text chunking and embeddings
+-Vector similarity search with FAISS
+-LLM integration with OpenAI
+-Streamlit app development
+-Git and GitHub version control
+-Cloud deployment with Streamlit Community Cloud
+
+## Run Locally
+1. Clone the repository:
+
+'''bash
+git clone https://github.com/Birukecole21/rag-ai-chatbot.git
+'''
+
+2. Go into the poject folder:
+
+'''bash 
+cd rag-ai-chatbot
+'''
+
+3. Install the required packages: 
+
+'''bash
+pip install -r requirements.txt
+
+4. create a '.env' file and add your OpenAI API key:
+
+'''text
+OPENAI_API_KEY=your_api_key_here
+'''
+
+5. Run the streamlit app:
+
+'''bash
+python -m streamlit run app.py
+'''
+
