@@ -4,6 +4,7 @@
 
 A Retrieval-Augmented Generation (RAG) chatbot that allows users to upload a PDF document and ask questions about its content.
 ## Demo
+🔗 [Try the Live RAG PDF Assistant](https://rag-ai-chatbot-qps8szryddqbrthnasgreh.streamlit.app/)
 
 ![RAG PDF Assistant Demo](rag-chatbot-demo.png)
 
